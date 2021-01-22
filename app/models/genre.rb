@@ -3,14 +3,18 @@ class Genre < ActiveRecord::Base
   has_many :artists, through: :songs
 
   def song_count
-    # return the number of songs in a genre
+    self.songs.count
+  end
+
+  def songs_same_genre
+    songs.select {|song| song.genre == self}
   end
 
   def artist_count
-    # return the number of artists associated with the genre
+    songs_same_genre.map(&:artist).uniq.count
   end
 
   def all_artist_names
-    # return an array of strings containing every musician's name
+    songs.map {|song| song.artist.name} 
   end
 end
